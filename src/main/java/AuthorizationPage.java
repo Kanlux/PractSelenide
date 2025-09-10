@@ -10,10 +10,24 @@ public class AuthorizationPage {
     }
 
     public SelenideElement searchPassword() {
-        return $("input[type = ''password]");
+        return $("input[type = 'password']");
+    }
+
+    public SelenideElement button() {
+        return $("#login-form__button");
     }
 
     public SelenideElement searchRegistration() {
         return $(byText("Регистрация"));
+    }
+
+    public SelenideElement errorEmail() {
+        return $(byText("Некорректный емейл"));
+    }
+
+    public void SignInPos() {
+        searchEmail().setValue(DataUser.email);
+        searchPassword().setValue(DataUser.password);
+        button().click();
     }
 }

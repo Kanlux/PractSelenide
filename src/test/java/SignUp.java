@@ -1,34 +1,30 @@
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.junit5.SoftAssertsExtension;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Owner;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.io.File;
-
-import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-public class SignUp {
+@Epic("Регистрация пользователя")
+@Owner("Sergey")
+public class SignUp extends ParentTest {
     @RegisterExtension
     static SoftAssertsExtension softAssert = new SoftAssertsExtension();
 
-    FirstPage first = new FirstPage();
-    AuthorizationPage authorization = new AuthorizationPage();
     RegistrationPage registration = new RegistrationPage();
 
-    @BeforeEach
-    public void sign() {
-        open("https://news-feed.dunice-testing.com/");
-        first.entrance().click();
-        authorization.searchRegistration().click();
-    }
-
+    @Description("Успешная регистрация через мок" +
+            "Этот тест не создаёт нового пользователя, а проверяет вызов метода" +
+            "Для выполнения остальных тестов нужно пройти регистрацию ручным способом" +
+            "Все нужные данные для регистрации находяться в DataUser")
     @Test
     public void signUpPos() {
+        authorization.searchRegistration().click();
+
         registration.signUpPos();
 
         RegistrationPage registrationPage = mock(RegistrationPage.class);
@@ -38,8 +34,11 @@ public class SignUp {
         registration.searchError().shouldBe(visible);
     }
 
+    @Description("Неспешная регистрация")
     @Test
     public void signUpNeg() {
+        authorization.searchRegistration().click();
+
         registration.signUpNeg();
 
         registration.errorEmail().shouldBe(visible);
